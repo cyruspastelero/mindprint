@@ -1,0 +1,11 @@
+{
+  "name": "mindprint",
+  "version": "0.1.0",
+  "description": "Turn a real person's public record into a perspective skill your agent can think with: researched, cited, quote-checked and tested blind against the model's own guess.",
+  "author": {
+    "name": "Cyrus David Pastelero"
+  },
+  "repository": "https://github.com/cyruspastelero/mindprint",
+  "license": "MIT",
+  "keywords": ["skills", "agent-skills", "persona", "research", "mental-models", "evaluation"]
+}
