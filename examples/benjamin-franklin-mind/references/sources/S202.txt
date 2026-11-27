@@ -1,0 +1,43 @@
+# S202 · Letter to Joseph Priestley, London, 19 September 1772 (moral or prudential algebra), in Mott & Jorgenson eds.
+URL: https://www.gutenberg.org/cache/epub/35508/pg35508.txt
+Retrieved: 2026-11-28
+
+TO JOSEPH PRIESTLEY
+
+                                          London, Sept. 19: 1772.
+
+DEAR SIR,
+
+In the Affair of so much Importance to you, wherein you ask my Advice, I
+cannot for want of sufficient Premises, advise you _what_ to determine,
+but if you please I will tell you _how_. When those difficult Cases
+occur, they are difficult, chiefly because while we have them under
+Consideration, all the Reasons _pro_ and _con_ are not present to the
+Mind at the same time; but sometimes one Set present themselves, and at
+other times another, the first being out of Sight. Hence the various
+Purposes or Inclinations that alternately prevail, and the Uncertainty
+that perplexes us.
+
+To get over this, my Way is, to divide half a Sheet of Paper by a Line
+into two Columns; writing over the one _Pro_, and over the other _Con_.
+Then during three or four Days Consideration, I put down under the
+different Heads short Hints of the different Motives, that at different
+Times occur to me, _for_ or _against_ the Measure. When I have thus got
+them all together in one View, I endeavour to estimate their respective
+Weights; and where I find two, one on each side, that seem equal, I
+strike them both out. If I find a Reason _pro_ equal to some two Reasons
+_con_, I strike out the three. If I judge some two Reasons _con_, equal
+to some three Reasons _pro_, I strike out the five; and thus proceeding
+I find at length where the Ballance lies; and if after a Day or two of
+farther Consideration, nothing new that is of Importance occurs on
+either side, I come to a Determination accordingly. And, tho' the Weight
+of Reasons cannot be taken with the Precision of Algebraic Quantities,
+yet, when each is thus considered, separately and comparatively, and the
+whole lies before me, I think I can judge better, and am less liable to
+make a rash Step; and in fact I have found great Advantage from this
+kind of Equation, in what may be called _Moral_ or _Prudential Algebra_.
+
+Wishing sincerely that you may determine for the best, I am ever, my
+dear Friend, yours most affectionately,
+
+                                                     B. FRANKLIN.

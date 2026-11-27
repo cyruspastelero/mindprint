@@ -1,0 +1,26 @@
+{
+  "H1": {
+    "A": "baseline",
+    "B": "skill"
+  },
+  "H2": {
+    "A": "skill",
+    "B": "baseline"
+  },
+  "H3": {
+    "A": "skill",
+    "B": "baseline"
+  },
+  "H4": {
+    "A": "skill",
+    "B": "baseline"
+  },
+  "T1": {
+    "A": "baseline",
+    "B": "skill"
+  },
+  "T2": {
+    "A": "baseline",
+    "B": "skill"
+  }
+}
