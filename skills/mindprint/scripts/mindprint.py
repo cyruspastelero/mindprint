@@ -2,7 +2,7 @@
 """mindprint CLI: scaffold, gate and verify a perspective skill (contract: docs/SPEC.md).
 
   mindprint.py init <out-dir> --name "Full Name" [--tier standard] [--topic]
-  mindprint.py status <out>             research gate: ledger, tracks, holdout, prior
+  mindprint.py status <out> [--allow-low-primary REASON]   research gate
   mindprint.py check <out> [--strict]   output skill rules, then quotes
   mindprint.py quotes <out> [--strict]  every cited quote against its archived source
   mindprint.py blind <out> --question Q1 --arm skill=a.md --arm baseline=b.md [--seed N] [--date D]
@@ -330,14 +330,18 @@ def cmd_quotes(args, rep):
 
 
 # Status
-def status_sources(ledger, tier, rep):
+def status_sources(ledger, tier, rep, allow_low_primary=None):
     if not ledger:
         return rep.fail("sources", "the ledger has no sources")
     counts = {t: sum(1 for e in ledger.values() if e.get("track") == t) for t in TRACKS}
     rep.ok("tracks", ", ".join(f"{t} {n}" for t, n in counts.items()))
     primary = sum(1 for e in ledger.values() if e.get("tier") == "primary")
     share = f"{primary}/{len(ledger)} primary ({primary / len(ledger):.0%})"
-    rep.check(primary * 2 >= len(ledger), "primary-share", share, f"{share}, need >= 50%")
+    reason = (allow_low_primary or "").strip()
+    if primary * 2 < len(ledger) and reason:
+        rep.warn("primary-share", f"{share}, below 50%; allowed: {reason}")
+    else:
+        rep.check(primary * 2 >= len(ledger), "primary-share", share, f"{share}, need >= 50%")
     critical = sum(1 for e in ledger.values() if e.get("critical") is True)
     need = 1 if tier == "quick" else 2
     rep.check(critical >= need, "critics", f"{critical} critical sources",
@@ -348,14 +352,16 @@ def research_items(out, path, rep):
     """Validate one track file; return its count of valid 'Differs from prior' items."""
     name, text = relative(out, path), read_text(path)
     if todo_lines(text):
-        rep.fail("research", f"{name}:{todo_lines(text)[0]}: still has placeholder markers")
+        rep.fail("research", f"{name}:{todo_lines(text)[0]}: still has placeholder markers",
+                 "replace the placeholder lines with findings and [Sxx] tags")
     sections = split_sections(numbered(text))
     if not sections or sections[-1][0] != "## Differs from prior":
         rep.fail("research", f"{name}: does not end with '## Differs from prior'")
         return 0
     items = list_items(sections[-1][2])
     for no, _ in (item for item in items if not DIFF_RE.match(item[1])):
-        rep.fail("research", f"{name}:{no}: item must start with [overturn], [deepen] or [new]")
+        rep.fail("research", f"{name}:{no}: item must start with [overturn], [deepen] or [new]",
+                 "start the item with [overturn], [deepen] or [new]")
     return sum(1 for _, text in items if DIFF_RE.match(text))
 
 
@@ -366,18 +372,33 @@ def status_research(out, tier, rep):
         if path.is_file():
             total += research_items(out, path, rep)
         elif track in required:
-            rep.fail("research", f"{relative(out, path)} is missing ({tier} tier needs {track})")
+            rep.fail("research", f"{relative(out, path)} is missing ({tier} tier needs {track})",
+                     "write the track file (init scaffolds it)")
     need = 5 if tier == "quick" else 8
     rep.check(total >= need, "differs-from-prior", f"{total} items",
               f"{total} items, {tier} tier needs >= {need}")
 
 
-def status_holdout(out, ledger, rep):
+def holdout_unsealed(text):
+    """True while holdout.md is still init's placeholder: markers and no filled-in field."""
+    values = [v for item in parse_blocks(text, HOLD_RE, HOLDOUT_FIELDS)
+              for v in item["fields"].values()]
+    return bool(TODO_RE.search(text)) and all(TODO_RE.search(v) for v in values)
+
+
+def status_holdout(out, ledger, rep, sealed=False):
+    """sealed=True (check) fails on init's placeholder; status only WARNs on it."""
     if len(ledger) < 10:
         return rep.warn("holdout", f"no holdout test: ledger has {len(ledger)} sources (< 10)")
     if not (out / HOLDOUT).is_file():
         return rep.fail("holdout", f"{HOLDOUT} is missing")
     text = read_text(out / HOLDOUT)
+    if not sealed and holdout_unsealed(text):
+        return rep.warn("holdout", f"{HOLDOUT}: not sealed yet (still the init placeholder); "
+                        "seal it in step 3")
+    if todo_lines(text):
+        rep.fail("holdout", f"{HOLDOUT}:{todo_lines(text)[0]}: still has placeholder markers",
+                 "finish every item and remove the TODO markers")
     for no, line in numbered(text):
         if re.match(r"##\s*H\d", line) and not HOLD_RE.match(line):
             rep.fail("holdout", f"{HOLDOUT}:{no}: malformed holdout heading '{line.strip()}'")
@@ -399,7 +420,7 @@ def status_prior(out, rep):
 def cmd_status(args, rep):
     out = resolve_out(args.out)
     ledger, tier = load_ledger(out, rep), skill_meta(out)[1]
-    status_sources(ledger, tier, rep)
+    status_sources(ledger, tier, rep, args.allow_low_primary)
     status_research(out, tier, rep)
     status_holdout(out, ledger, rep)
     status_prior(out, rep)
@@ -653,7 +674,7 @@ def cmd_check(args, rep):
     cards = check_casebook(out, skill_meta(out)[1], rep)
     check_skill(out, {"ledger": ledger, "cards": cards}, rep)
     check_tags(out, ledger, rep)
-    status_holdout(out, ledger, rep)
+    status_holdout(out, ledger, rep, sealed=True)
     check_text_rules(out, rep)
     check_angle_placeholders(out, rep)
     check_holdout_leak(out, rep)
@@ -670,7 +691,8 @@ def build_parser():
         "init": [("--name", {"required": True}),
                  ("--tier", {"choices": TIERS, "default": "standard"}),
                  ("--topic", {"action": "store_true", "help": "a field: <slug>-field"})],
-        "status": [],
+        "status": [("--allow-low-primary", {"metavar": "REASON",
+                                            "help": "WARN, not FAIL, on primary share < 50%%"})],
         "check": [("--strict", {"action": "store_true", "help": "unarchived quotes FAIL"})],
         "quotes": [("--strict", {"action": "store_true", "help": "unarchived quotes FAIL"})],
         "blind": [("--question", {"required": True}), ("--seed", {"type": int}), ("--date", {}),

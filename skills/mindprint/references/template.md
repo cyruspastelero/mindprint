@@ -2,7 +2,7 @@
 
 The exact skeleton of every output file. `mindprint init` writes these with placeholder text marked
 `<!-- mindprint:todo -->`; `check` and `status` fail while that marker or the word `TODO` remains.
-They do not catch `<…>` placeholders copied from this file, so search for `<` before you run `check`.
+`check` also fails on `<…>` placeholders copied from this file.
 
 Fixed: file names, frontmatter keys, the H2 headings and their order, the line labels (`When:`,
 `Evidence:`, `Breaks when:`, the six bold Boundaries labels, the casebook fields). Free: everything inside
@@ -110,7 +110,7 @@ When: <the kind of situation that triggers it>
 I do: <the concrete action, specific enough to copy>
 Example: <year, situation, what I did, what followed> [S5xx]
 
-<5–8 moves. At least one names what I check first about a company, product or claim.>
+<5–8 moves. At least one names what I check first about a claim, a plan or a method.>
 
 ## Mental models
 
@@ -198,7 +198,8 @@ Use for: <kinds of user questions, in the user's terms>
 Sources: [S5xx, S4xx]
 ```
 
-Repeat per card. Quick ≥ 6, standard ≥ 12, deep ≥ 20. At least a quarter are failures, regrets or reversals.
+Repeat per card. Quick ≥ 6, standard ≥ 12, deep ≥ 20 (`check` counts). At least a quarter are failures,
+regrets or reversals (checked by you, not the CLI).
 No words on record for that episode: `In their words: (none on record)`.
 
 ## 5 · voice.md
@@ -224,7 +225,7 @@ No words on record for that episode: `In their words: (none on record)`.
 [S3xx] · <setting, year>
 ```
 
-8–15 passages. Grouped by setting because the same person sounds very different in each, and the runtime
+8–15 passages (checked by you, not the CLI). Grouped by setting because the same person sounds very different in each, and the runtime
 model picks the setting that matches.
 
 ## 6 · Research files
@@ -319,6 +320,9 @@ Result: pass | fail. <why, quoting the line that marks inference or the line tha
 
 ## Known weak spots
 <what is still weak after two rounds; also listed under Boundaries>
+
+## Build notes
+<optional: the step 3 research summary when the user skipped the checkpoint; WARNs you left and why>
 ```
 
 ## 9 · Field variant (`--topic`, `<slug>-field`)

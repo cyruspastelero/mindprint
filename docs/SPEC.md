@@ -53,8 +53,9 @@ mindprint/
     └── validation/<YYYY-MM-DD>/   # blind packets, key, grades (written by the CLI)
 ```
 
-Quick tier uses tracks 01, 02 (or 01 if no conversations exist), 05 only; the other
-track files may be absent.
+Quick tier uses tracks 01, 02 and 05 only; the other track files may be absent. With no
+conversations on record, delete 02 (only 01 and 05 are required). Quick tier still needs one
+critical source: logged with `"track": "critics"`, summarised in 01 or 05, no 04 file.
 
 ## Source ledger: `references/sources.jsonl`
 
@@ -156,7 +157,7 @@ each FAIL followed by an indented `fix:` line. Exit code 1 if any FAIL, else 0.
 | command | does |
 |---|---|
 | `init <out-dir> --name "Full Name" [--tier standard] [--topic]` | scaffolds `$OUT` with all files above, placeholder text, empty ledger; refuses to overwrite a non-empty dir |
-| `status <out>` | research gate: per-track source counts; primary share ≥ 50%; ≥ 1 critical source (standard/deep: ≥ 2); `Differs from prior` items ≥ 8 (quick: ≥ 5); holdout has 3–5 items unless ledger < 10 sources (then WARN "no holdout test"); 00-prior.md exists and is non-placeholder |
+| `status <out> [--allow-low-primary "<reason>"]` | research gate: per-track source counts; primary share ≥ 50% (with `--allow-low-primary`, a WARN that prints the reason); ≥ 1 critical source (standard/deep: ≥ 2); `Differs from prior` items ≥ 8 (quick: ≥ 5); holdout has 3–5 items unless ledger < 10 sources (then WARN "no holdout test"); a holdout still equal to the `init` placeholder WARNs "not sealed yet", a partly filled one FAILs; 00-prior.md exists and is non-placeholder |
 | `check <out>` | everything in "Output SKILL.md", casebook minimum, tags resolve, line limits, no absolute paths (`/Users/`, `/home/`, `C:\`), no leftover `TODO`/placeholder markers, holdout leak check (no holdout `What happened` sentence of ≥ 8 words, and no 8-word shingle from it, appears in SKILL.md/casebook.md/voice.md), then runs `quotes` |
 | `quotes <out> [--strict]` | verifies every quote as above. Archived and found: PASS. Archived and not found: FAIL. No archive: WARN (FAIL with `--strict`) |
 | `blind <out> --question Q1 --arm skill=<file> --arm baseline=<file> [--arm …]` | copies each arm's answer into `validation/<date>/<Q>/` as `A.md`, `B.md`… in a random order (`--seed` for tests), strips lines matching skill names/case ids (`C\d+`, `[S\d+]` tags are kept), appends the mapping to `validation/<date>/key.json` |
@@ -175,7 +176,8 @@ Clarifications (settled after the first build):
   `[insertions]` and `...` FAILs.
 - An inline quote may wrap across lines within one paragraph. A cited paragraph with an odd
   number of straight double quotes (e.g. `5"`) gets WARN `quote-unparsed`; use curly quotes.
-- `check` also runs the holdout rules (when the ledger has ≥ 10 sources). The absolute-path
+- `check` also runs the holdout rules (when the ledger has ≥ 10 sources) and, unlike `status`,
+  FAILs on an unsealed placeholder holdout. The absolute-path
   rule ignores matches inside a URL (`https://…/home/…`).
 - Parallel research agents take separate ID ranges (`S101–S199` for track 01, `S201–S299` for
   track 02 …) so the ledger never collides.
@@ -187,7 +189,12 @@ Clarifications (settled after the first build):
   in a folder outside `$OUT` and never sees `key.json`.
 - `FIDELITY.md` follows `references/template.md` §8: a header line (date, answer and grader
   models, independence), then `## Holdout test`, `## Task test`, `## Boundary test`, `## Rounds`,
-  `## Known weak spots`. Results that are not in yet say "pending".
+  `## Known weak spots`, optionally `## Build notes` (the step 3 summary when the checkpoint was
+  skipped). Results that are not in yet say "pending".
+- `init` writes `SKILL.md` from the `references/template.md` § 3 skeleton (for `--topic`, a TODO in
+  place of the first-person usage rules), with every placeholder marked so a fresh scaffold FAILs `check`.
+- Not checked by the CLI (the builder checks them): ≥ 25% of case cards are failures, regrets or
+  reversals; `voice.md` holds 8–15 passages.
 
 Code rules: functions under ~50 lines, no third-party packages, clear error messages naming
 the file and line, no swallowed exceptions.

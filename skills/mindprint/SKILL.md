@@ -107,7 +107,8 @@ Pass: the file is filled in (`status` rejects a placeholder). Output: `00-prior.
 Purpose: gather enough primary material, and go looking for what differs from the prior.
 
 Six tracks, one file each: writings, conversations, fragments, critics, decisions, timeline
-(quick tier: writings, conversations, decisions). With subagents, run them in parallel using the brief in
+(quick tier: writings, conversations, decisions; it still needs a critical source: log it with
+`"track": "critics"` and summarise it in the decisions or writings file, no `04` file). With subagents, run them in parallel using the brief in
 `research.md`; without, run them one after another. Every track agent:
 
 - writes its file as it goes, not at the end, so a crash loses nothing;
@@ -119,7 +120,7 @@ Six tracks, one file each: writings, conversations, fragments, critics, decision
 - ends with `## Differs from prior`, each item starting `[overturn]`, `[deepen]` or `[new]`.
 
 Pass: `mindprint status $OUT` exits 0 (track counts, primary share ≥ 50%, enough critical sources,
-enough `Differs from prior` items). Under the count? You are restating common knowledge. Go deeper:
+enough `Differs from prior` items). The holdout is not sealed yet, so `status` WARNs on it here; that is expected. Under the count? You are restating common knowledge. Go deeper:
 full interview transcripts, early writing, first-hand accounts, critics. Output: `research/01–06`, ledger, archives.
 
 ### 3 · Seal the holdout, then check in
@@ -133,9 +134,9 @@ Fewer than 10 sources in the ledger: skip the holdout and say "no holdout test" 
 
 **Stop here once.** Show the user: source counts per track, the strongest overturn and new items,
 contradictions, thin tracks, and what you plan to extract. This is the only mid-run checkpoint: fixing
-direction here is cheap. If the user said "don't ask me anything", skip the stop and put this summary in the delivery note.
+direction here is cheap. If the user said "don't ask me anything", skip the stop and put this summary in `FIDELITY.md` under `## Build notes`.
 
-Pass: `status` exits 0 with the holdout counted. Output: `holdout.md`.
+Pass: `status` exits 0 and reports the holdout as sealed items, not "not sealed yet" (`check` fails on an unsealed holdout). Output: `holdout.md`.
 
 ### 4 · Extract
 
@@ -148,7 +149,7 @@ Follow `extraction.md`. In short:
   predicts their stance on new questions; not what every smart person thinks). Others become heuristics.
 - **Heuristics** (5–10): "when X, do Y" rules with a real instance each.
 - **Case cards**: real decisions told concretely. Quick 6, standard 12, deep 20. At least a quarter
-  are failures, regrets or reversals. Answers get accurate when the model reasons by analogy to real cases,
+  are failures, regrets or reversals (checked by you, not the CLI). Answers get accurate when the model reasons by analogy to real cases,
   not from a personality sketch.
 - **Common misreadings** (≥ 2): straight from the overturn items.
 - **Voice**: rules plus cited passages. Passages beat one-liners; samples beat rules.

@@ -26,7 +26,10 @@ In track files, mark items `(user material)` or `(web)`.
 **Tools.** Check what the host offers beyond plain search: full-page readers, PDF readers, transcript or
 subtitle tools, multi-site fetchers. Tell each track agent what it may use. Plain search and page fetch are enough.
 
-**Tier.** Quick: tracks 01, 02 (or 01 alone if no conversations exist) and 05, ~5 sources each.
+**Tier.** Quick: tracks 01, 02 and 05, ~5 sources each. No conversations on record (most people before
+recorded interviews)? Delete `02-conversations.md`; `status` does not need it in the quick tier.
+Quick still needs one critical source (below), but no critics track file: log it in the ledger with
+`"track": "critics"` and `"critical": true`, and summarise it in `05-decisions.md` or `01-writings.md`.
 Standard: all six. Deep: all six, more sources, fuller archives (`scoping.md` § Tiers).
 
 ## 2 · The six tracks
@@ -44,7 +47,8 @@ Track 5 is worth the most and is the easiest to do shallowly. It needs past-tens
 what they actually did, what followed, and their own explanation in their words where it exists.
 
 Track 4 is what keeps the portrait from being fan fiction. `status` fails without enough critical sources
-(≥ 1; standard and deep ≥ 2), marked `"critical": true` in the ledger.
+(≥ 1; standard and deep ≥ 2), marked `"critical": true` in the ledger. In the quick tier there is no
+`04-critics.md`: see § 1 · Tier.
 
 ## 3 · Source ledger and ID ranges
 
@@ -80,7 +84,7 @@ Tiers work the same in any language. Judge the source by how close it is to the 
 
 | Tier | What counts | Use |
 |---|---|---|
-| `primary` | their own words or acts, first-hand: books and essays they wrote, their posts and letters, full transcripts or recordings of them speaking, their filings, court testimony, minutes, code, user-supplied material by them | the backbone. ≥ 50% of the ledger (`status` checks) |
+| `primary` | their own words or acts, first-hand: books and essays they wrote, their posts and letters, full transcripts or recordings of them speaking, their filings, court testimony, minutes, code, user-supplied material by them | the backbone. ≥ 50% of the ledger (`status` checks; see below for one-work subjects) |
 | `secondary` | reporting, biographies, other people's interviews and memoirs, reviews, academic studies, a journalist's account of an event they witnessed | context, critics, events they never wrote about. Cross-check against primary where possible |
 | `tertiary` | summaries, encyclopedias, wikis, quote collections | leads only. Follow them to the primary source and cite that |
 
@@ -93,6 +97,12 @@ Tiers work the same in any language. Judge the source by how close it is to the 
 
 **Wikipedia and other wikis**: use them as a map to find primary sources and dates. Never cite them.
 If a tertiary source slipped into the ledger, it may not back any `[Sxx]` tag in the skill.
+
+**One main work** (a subject known for one book, one paper or one set of notes): log a long work as
+separate sources only for parts published or written separately, such as separate letters, essays or
+notes with distinct dates. Otherwise it is one source. If the primary share is then below 50% because
+little else of theirs survives, run `mindprint status $OUT --allow-low-primary "<reason>"`: the FAIL
+becomes a WARN that prints the reason. Repeat the reason in Boundaries (`**Blind spots**`).
 
 **Weighting inside primary**: a full transcript beats an edited excerpt; an original recording beats a
 transcript someone else made; their own account of a decision beats a later retelling, but record both
@@ -192,6 +202,9 @@ Items stay sealed after validation so future updates can be re-tested.
 
 Fewer than 10 sources in the ledger: skip the holdout. `status` WARNs "no holdout test"; repeat that at delivery.
 
+Until you seal it, `holdout.md` is the `init` placeholder and `status` WARNs "not sealed yet". A partly
+filled or malformed holdout FAILs `status`. `check` FAILs on an unsealed holdout once the ledger has ≥ 10 sources.
+
 ## 9 · Serial fallback and limits
 
 | Situation | Do this |
@@ -209,5 +222,5 @@ Fewer than 10 sources in the ledger: skip the holdout. `status` WARNs "no holdou
 | Fewer than 10 usable sources | Tell the user now. Fewer models (2–3), longer Boundaries, no holdout |
 | Tracks contradict each other | Keep both. It is signal; it becomes a Tension |
 | `status` says too few `Differs from prior` items | You are restating common knowledge. Go to full transcripts, early writing, first-hand accounts, critics |
-| `status` says primary share < 50% | Replace secondary retellings with the original they retell |
+| `status` says primary share < 50% | Replace secondary retellings with the original they retell. One main work: § 4 |
 | A quote cannot be traced to an original | Do not use it, not even as paraphrase of something they "said" |

@@ -99,15 +99,16 @@ are in [`docs/SPEC.md`](docs/SPEC.md).
 
 ## The CLI
 
-Python 3.9+, standard library only. The agent runs it; you can too.
+Python 3.9+, standard library only. The agent runs it; you can too. From the repo root, each
+command below is `python3 skills/mindprint/scripts/mindprint.py <command>`.
 
 | Command | Checks |
 | --- | --- |
-| `mindprint.py init <out> --name "…"` | scaffolds a new skill |
-| `mindprint.py status <out>` | research gate: primary share, critics, what differs from the prior, holdout |
-| `mindprint.py check <out> --strict` | headings, counts, citations, holdout leaks, placeholders, paths, quotes |
-| `mindprint.py quotes <out>` | each quote against its archived source |
-| `mindprint.py blind` / `unblind` | shuffles answers for the grader, then joins grades with the key |
+| `init <out> --name "…" --tier quick\|standard\|deep` | scaffolds a new skill (default tier: standard) |
+| `status <out>` | research gate: primary share, critics, what differs from the prior, holdout |
+| `check <out> --strict` | headings, counts, citations, holdout leaks, placeholders, paths, quotes |
+| `quotes <out> --strict` | each quote against its archived source; unarchived quotes fail |
+| `blind` / `unblind` | shuffles answers for the grader, then joins grades with the key |
 
 ## Example results
 
