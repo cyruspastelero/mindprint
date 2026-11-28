@@ -440,16 +440,24 @@ footer { position: relative; overflow: hidden; container-type: inline-size; marg
 
     <section class="scene" id="start" data-scene="7" aria-labelledby="start-h">
       <header>
-        <h2 id="start-h"><span>Install it, then name someone</span></h2>
-        <p>On Claude Code, add the plugin. For Codex, Cursor, Gemini CLI or any agent that reads <a href="https://agentskills.io">Agent Skills</a>, copy <code>skills/mindprint/</code> into its skills folder, or run <code>npx skills add cyruspastelero/mindprint</code>.</p>
+        <h2 id="start-h"><span>Start with one prompt</span></h2>
+        <p>Paste this into your coding agent: Claude Code, Codex, Cursor, Gemini CLI or any agent that reads <a href="https://agentskills.io">Agent Skills</a>. It sets everything up and asks before installing anything.</p>
       </header>
-<div class="prompt"><button type="button" class="copy" data-copy="install">Copy</button>
-<pre id="install">/plugin marketplace add cyruspastelero/mindprint
-/plugin install mindprint@mindprint</pre></div>
+<div class="prompt"><button type="button" class="copy" data-copy="setup-prompt">Copy</button>
+<pre id="setup-prompt">Set up mindprint for me so I can build perspective skills of real people.
+1. Clone https://github.com/cyruspastelero/mindprint.git and work inside that folder.
+2. Check that python3 is version 3.9 or newer.
+   Ask me before installing anything that is missing.
+3. Copy skills/mindprint/ into the folder you load skills from.
+4. Run python3 skills/mindprint/scripts/mindprint.py check examples/benjamin-franklin-mind --strict
+   and confirm it passes.
+5. Tell me if I need to restart you to load the skill,
+   then how to build my first one.</pre></div>
       <div class="say">
         <span>Then say</span>
         <p>Build a perspective skill for Ada Lovelace, quick tier.</p>
       </div>
+      <p class="small">On Claude Code you can also install the plugin: <code>/plugin marketplace add cyruspastelero/mindprint</code>, then <code>/plugin install mindprint@mindprint</code>. Or run <code>npx skills add cyruspastelero/mindprint</code>.</p>
       <p class="small">The agent states the cost tier, researches, stops once to show you what it found, then builds and tests the skill. To try one without building, copy <a href="https://github.com/cyruspastelero/mindprint/tree/main/examples/benjamin-franklin-mind"><code>examples/benjamin-franklin-mind/</code></a> into your skills folder.</p>
     </section>
 
