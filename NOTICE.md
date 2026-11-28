@@ -29,3 +29,6 @@ SOFTWARE.
 The example in `examples/benjamin-franklin-mind/` quotes Benjamin Franklin's own writings, which
 are in the public domain. The archived texts in its `references/sources/` come from Project
 Gutenberg editions with the Project Gutenberg header and licence removed.
+
+The homepage in `site/` uses Schibsted Grotesk, Newsreader and Geist Mono, each under the SIL Open
+Font License 1.1. Their licence texts are in `site/fonts/`.
